@@ -1,0 +1,2152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dental Studio Clinic</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+            color: #333333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .supabase-banner {
+            background: linear-gradient(135deg, #f38020 0%, #faad3f 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .supabase-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ffeb3b;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.connected {
+            background: #4caf50;
+            animation: none;
+        }
+
+        .status-indicator.error {
+            background: #f44336;
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .supabase-config {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .header {
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 16px;
+            flex-wrap: nowrap;
+            padding: 12px 0 22px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .header-logo {
+            width: 72px;
+            height: auto;
+            flex-shrink: 0;
+            filter: none;
+        }
+
+        .header-brand {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 2px;
+        }
+
+        .header-brand h1 {
+            font-size: 1.85em;
+            color: #000000;
+            letter-spacing: 3px;
+            font-weight: 800;
+            text-shadow: none;
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .header-brand p {
+            font-size: 0.9em;
+            color: #555555;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .form-section {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #e8e8e8;
+        }
+
+        .form-section h2 {
+            color: #222222;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-weight: 600;
+            color: #333333;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        input, textarea, select {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s;
+            font-family: inherit;
+            background: #ffffff;
+            color: #333333;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #999;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #333;
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+            background: #ffffff;
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 1em;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-save {
+            background: #222222;
+            color: #ffffff;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .btn-save:hover {
+            background: #000000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-save:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .btn-clear {
+            background: #f5f5f5;
+            color: #333333;
+            border: 1px solid #ddd;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .btn-clear:hover {
+            background: #eeeeee;
+            border-color: #bbb;
+        }
+
+        .btn-export {
+            background: #24c08d;
+            color: #ffffff;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .btn-export:hover {
+            background: #1a9c6b;
+            box-shadow: 0 4px 12px rgba(36, 192, 141, 0.3);
+        }
+
+        .btn-export:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .records-section {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            border: 1px solid #e8e8e8;
+        }
+
+        .records-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .records-header h2 {
+            color: #222222;
+            font-size: 1.8em;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+        }
+
+        .no-records {
+            text-align: center;
+            color: #888;
+            padding: 40px;
+            font-size: 1.1em;
+        }
+
+        .today-badge {
+            background: #f0f0f0;
+            color: #333333;
+            border: 1px solid #ddd;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.55em;
+            font-weight: 600;
+            letter-spacing: 1px;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        th {
+            background: #f9f9f9;
+            font-weight: 700;
+            color: #333;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        .btn-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-delete {
+            background: #f44336;
+            color: white;
+            padding: 8px 12px;
+            font-size: 0.9em;
+        }
+
+        .btn-delete:hover {
+            background: #d32f2f;
+        }
+
+        .btn-confirm {
+            background: #4caf50;
+            color: white;
+            padding: 8px 12px;
+            font-size: 0.9em;
+        }
+
+        .btn-confirm:hover {
+            background: #388e3c;
+        }
+
+        .btn-postpone {
+            background: #7e57c2;
+            color: white;
+            padding: 8px 12px;
+            font-size: 0.9em;
+        }
+
+        .btn-postpone:hover {
+            background: #5e35b1;
+        }
+
+        .btn-pay {
+            background: #2196f3;
+            color: white;
+            padding: 6px 10px;
+            font-size: 0.85em;
+        }
+
+        .btn-pay:hover {
+            background: #1976d2;
+        }
+
+        .btn-view {
+            background: #f5f5f5;
+            color: #333333;
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            font-size: 0.9em;
+        }
+
+        .btn-view:hover {
+            background: #eeeeee;
+        }
+
+        .installment-progress {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .installment-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .installment-row:last-child {
+            border-bottom: none;
+        }
+
+        .installment-paid {
+            color: #4caf50;
+            font-weight: 600;
+        }
+
+        .installment-due {
+            color: #ff9800;
+            font-weight: 600;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-content h3 {
+            margin-bottom: 15px;
+            color: #222;
+        }
+
+        .postpone-modal {
+            max-width: 560px;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .postpone-header {
+            padding: 24px 28px;
+            background: linear-gradient(135deg, #7e57c2, #5e35b1);
+            color: #fff;
+        }
+
+        .postpone-header h3 {
+            color: #fff;
+            margin: 0 0 6px;
+            font-size: 1.45em;
+        }
+
+        .postpone-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 0.92em;
+        }
+
+        .postpone-body {
+            padding: 26px 28px;
+        }
+
+        .postpone-current {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 15px;
+            margin-bottom: 20px;
+            background: #f7f3fc;
+            border: 1px solid #e4d9f5;
+            border-radius: 10px;
+            color: #5e35b1;
+        }
+
+        .postpone-current strong {
+            color: #333;
+        }
+
+        .postpone-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .postpone-reason {
+            margin-top: 15px;
+        }
+
+        .postpone-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .postpone-actions button {
+            flex: 1;
+        }
+
+        .btn-postpone-save {
+            background: #7e57c2;
+            color: #fff;
+        }
+
+        .btn-postpone-save:hover {
+            background: #5e35b1;
+        }
+
+        .reservation-time {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-left: 8px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: #f0f7ff;
+            color: #1565c0;
+            font-weight: 600;
+            font-size: 0.88em;
+        }
+
+        .shared-sync-note {
+            flex-basis: 100%;
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        @media (max-width: 600px) {
+            .postpone-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert.success {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            color: #2e7d32;
+        }
+
+        .alert.error {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            color: #c62828;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f5f5f5;
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-overlay.hide {
+            display: none;
+        }
+
+        .login-box {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            padding: 35px;
+            max-width: 360px;
+            width: 90%;
+            border: 1px solid #e8e8e8;
+        }
+
+        .login-box h2 {
+            color: #222222;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .role-badge {
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #333;
+            margin-left: auto;
+        }
+
+        .btn-logout {
+            background: #f5f5f5;
+            color: #333333;
+            border: 1px solid #ddd;
+            padding: 8px 16px;
+            font-size: 0.9em;
+        }
+
+        .btn-logout:hover {
+            background: #eeeeee;
+        }
+
+        .restricted-cell {
+            color: #999;
+            font-style: italic;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #24c08d;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .btn-file {
+            background: #2196f3;
+            color: white;
+            padding: 8px 12px;
+            font-size: 0.9em;
+        }
+
+        .btn-file:hover {
+            background: #1976d2;
+        }
+
+        .case-status {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .case-status.in-progress {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .case-status.complete {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .case-status.incomplete {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .case-status.postponed {
+            background: #ede7f6;
+            color: #5e35b1;
+        }
+
+        .modal-content-wide {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 700px;
+            width: 92%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .file-section-title {
+            font-size: 1.05em;
+            font-weight: 700;
+            color: #222;
+            margin: 20px 0 10px;
+            padding-top: 12px;
+            border-top: 1px solid #eee;
+        }
+
+        .file-section-title:first-of-type {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+
+        .payment-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .history-search {
+            margin-bottom: 12px;
+        }
+
+        .history-entry {
+            background: #f9f9f9;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .history-entry-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .history-entry-date {
+            font-size: 0.85em;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .history-entry textarea {
+            width: 100%;
+            min-height: 60px;
+        }
+
+        .btn-delete-entry {
+            background: #f44336;
+            color: white;
+            padding: 5px 10px;
+            font-size: 0.8em;
+        }
+
+        .btn-delete-entry:hover {
+            background: #d32f2f;
+        }
+
+        .btn-add-entry {
+            background: #222222;
+            color: #ffffff;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-add-entry:hover {
+            background: #000000;
+        }
+
+        .no-history {
+            text-align: center;
+            color: #888;
+            padding: 20px;
+        }
+
+        .file-number-history {
+            margin-top: 20px;
+            background: #fffdf5;
+            border: 1px solid #f0e6b8;
+            border-left: 4px solid #ff9800;
+            border-radius: 8px;
+            padding: 16px 20px;
+        }
+
+        .file-number-history h4 {
+            color: #ef6c00;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .file-number-history .old-record {
+            background: #ffffff;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+        }
+
+        .file-number-history .old-record:last-child {
+            margin-bottom: 0;
+        }
+
+        .file-number-history .old-record-meta {
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .file-number-history .old-record-line {
+            font-size: 0.92em;
+            color: #333;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Overlay -->
+    <div id="loginOverlay" class="login-overlay">
+        <div class="login-box">
+            <h2>Dental Studio Login</h2>
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label for="loginRole">Role</label>
+                <select id="loginRole">
+                    <option value="reception">Reception</option>
+                    <option value="doctor">Doctor</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter password">
+            </div>
+            <div class="button-group">
+                <button class="btn-save" onclick="login()">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Cloudflare Connection Banner -->
+        <div class="supabase-banner">
+            <div class="supabase-status">
+                <div class="status-indicator" id="statusIndicator"></div>
+                <div>
+                    <strong>Cloudflare Storage:</strong>
+                    <span id="statusText">Configuring...</span>
+                </div>
+            </div>
+            <div class="supabase-config">
+                <button class="btn-clear" onclick="showCloudflareConfig()">⚙️ Configure</button>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <div class="header-brand">
+                <h1>DENTAL STUDIO</h1>
+                <p>Clinic Management System</p>
+            </div>
+            <span id="roleBadge" class="role-badge"></span>
+            <button class="btn-logout" onclick="logout()">Logout</button>
+        </div>
+
+        <!-- Alert -->
+        <div id="alertBox" class="alert"></div>
+
+        <!-- Form Section -->
+        <div class="form-section">
+            <h2>New Patient Record</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="patientName">Patient Name *</label>
+                    <input type="text" id="patientName" placeholder="Full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="fileNumber">File Number</label>
+                    <input type="text" id="fileNumber" placeholder="File number" oninput="checkFileNumberHistory()">
+                </div>
+                <div class="form-group">
+                    <label for="doctorName">Doctor Name</label>
+                    <input type="text" id="doctorName" placeholder="Doctor name">
+                </div>
+                <div class="form-group">
+                    <label for="patientAge">Age *</label>
+                    <input type="number" id="patientAge" placeholder="Age" required>
+                </div>
+                <div class="form-group">
+                    <label for="patientPhone">Phone *</label>
+                    <input type="tel" id="patientPhone" placeholder="Phone number" required>
+                </div>
+                <div class="form-group">
+                    <label for="patientDiagnosis">Diagnosis *</label>
+                    <input type="text" id="patientDiagnosis" placeholder="Diagnosis" required>
+                </div>
+                <div class="form-group">
+                    <label for="paymentMethod">Payment Method *</label>
+                    <select id="paymentMethod" required onchange="toggleInstallmentFields()">
+                        <option value="">Select method</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Card">Card</option>
+                        <option value="Installment">Installment</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="paymentValue">Payment Value *</label>
+                    <input type="number" id="paymentValue" placeholder="Payment amount" required>
+                </div>
+                <div class="form-group" id="amountPaidGroup">
+                    <label for="amountPaidInput">Amount Paid (by reception)</label>
+                    <input type="number" id="amountPaidInput" placeholder="0">
+                </div>
+                <div class="form-group" id="downPaymentGroup" style="display: none;">
+                    <label for="downPayment">Down Payment</label>
+                    <input type="number" id="downPayment" placeholder="Down payment (optional)">
+                </div>
+                <div class="form-group" id="installmentCountGroup" style="display: none;">
+                    <label for="installmentCount">Number of Installments *</label>
+                    <input type="number" id="installmentCount" placeholder="e.g. 3" min="1">
+                </div>
+                <div class="form-group">
+                    <label for="reservationDate">Reservation Date</label>
+                    <input type="date" id="reservationDate">
+                </div>
+                <div class="form-group">
+                    <label for="reservationTime">Reservation Time</label>
+                    <input type="time" id="reservationTime">
+                </div>
+                <div class="form-group full">
+                    <label for="notes">Notes</label>
+                    <textarea id="notes" placeholder="Additional notes"></textarea>
+                </div>
+            </div>
+            <div id="fileNumberHistoryPreview" class="file-number-history" style="display: none;"></div>
+            <div class="button-group">
+                <button class="btn-save" onclick="addPatient()">Save Patient</button>
+                <button class="btn-clear" onclick="clearForm()">Clear</button>
+                <button class="btn-export" onclick="syncSharedData(true)" id="exportBtn">☁️ Save to Cloudflare</button>
+                <button class="btn-clear" onclick="loadSharedData(true)">🔄 Refresh from Cloudflare</button>
+                <button class="btn-clear" onclick="exportData()">📤 Export</button>
+                <button class="btn-clear" onclick="document.getElementById('importFile').click()">📥 Import</button>
+                <div class="shared-sync-note">Patients are saved to Cloudflare storage. Open this same Dental Studio Cloudflare URL on another device to see every patient that was added.</div>
+                <input type="file" id="importFile" accept=".json" onchange="importData(event)" style="display: none;">
+            </div>
+        </div>
+
+        <!-- Today's Reservations Section -->
+        <div class="records-section" style="margin-bottom: 30px;">
+            <div class="records-header">
+                <h2>Today's Reservations <span id="todayReservationCount">(0)</span></h2>
+            </div>
+            <div id="todayReservationsContainer"></div>
+        </div>
+
+        <!-- Records Section -->
+        <div class="records-section">
+            <div class="records-header">
+                <h2>Patient Records <span id="recordCount">(0)</span></h2>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search by name or phone...">
+                    <button class="btn-clear" onclick="clearSearch()">Clear</button>
+                </div>
+            </div>
+            <div id="recordsContainer"></div>
+        </div>
+    </div>
+
+    <!-- Cloudflare Config Modal -->
+    <div id="cloudflareModal" class="modal">
+        <div class="modal-content">
+            <h3>Cloudflare Storage</h3>
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label for="cloudflareWorkerUrl">Dental Studio Cloudflare URL</label>
+                <input type="text" id="cloudflareWorkerUrl" placeholder="https://dental-studio.your-account.workers.dev">
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label for="cloudflareShareToken">Share Token</label>
+                <input type="password" id="cloudflareShareToken" placeholder="dental-studio-clinic">
+            </div>
+            <div class="button-group">
+                <button class="btn-save" onclick="saveCloudflareConfig()">Save &amp; Connect</button>
+                <button class="btn-clear" onclick="closeCloudflareModal()">Cancel</button>
+            </div>
+            <p style="font-size: 0.85em; color: #666; margin-top: 15px; line-height: 1.5;">
+                If you open Dental Studio from the Cloudflare website, storage is automatic. If you open this HTML file on a PC, paste the Cloudflare URL once — then added patients are stored in the cloud and appear on every other device.
+            </p>
+        </div>
+    </div>
+
+    <!-- Postpone / Reschedule Modal -->
+    <div id="postponeModal" class="modal">
+        <div class="modal-content postpone-modal">
+            <div class="postpone-header">
+                <h3 id="postponeModalTitle">Reschedule Patient</h3>
+                <p>Choose the new appointment date and time.</p>
+            </div>
+            <div class="postpone-body">
+                <div class="postpone-current">
+                    <span>📅</span>
+                    <div><strong>Current:</strong> <span id="postponeCurrentDateTime">Not scheduled</span></div>
+                </div>
+
+                <div class="postpone-grid">
+                    <div class="form-group">
+                        <label for="postponeDate">New Date *</label>
+                        <input type="date" id="postponeDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="postponeTime">New Time *</label>
+                        <input type="time" id="postponeTime">
+                    </div>
+                </div>
+
+                <div class="form-group postpone-reason">
+                    <label for="postponeReason">Reason / Note</label>
+                    <textarea id="postponeReason" placeholder="Optional note about the postponement..."></textarea>
+                </div>
+
+                <div class="postpone-actions">
+                    <button class="btn-postpone-save" onclick="savePostponement()">📅 Save New Appointment</button>
+                    <button class="btn-clear" onclick="closePostponeModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Installment Plan Modal -->
+    <div id="installmentModal" class="modal">
+        <div class="modal-content">
+            <h3 id="installmentModalTitle">Installment Plan</h3>
+            <div id="installmentModalBody"></div>
+            <div class="button-group">
+                <button class="btn-clear" onclick="closeInstallmentModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Patient File Modal -->
+    <div id="patientFileModal" class="modal">
+        <div class="modal-content-wide">
+            <h3 id="patientFileModalTitle">Patient File</h3>
+
+            <div class="file-section-title">Case Status</div>
+            <div class="form-group">
+                <label for="fileStatus">Status</label>
+                <select id="fileStatus" onchange="handleFileStatusChange()">
+                    <option value="In Progress">In Progress</option>
+                    <option value="Postponed">Postponed</option>
+                    <option value="Complete">Complete</option>
+                    <option value="Incomplete">Incomplete</option>
+                </select>
+            </div>
+
+            <div class="file-section-title">Payment</div>
+            <div class="payment-summary-grid">
+                <div class="form-group">
+                    <label for="filePaidAmount">Amount Paid</label>
+                    <input type="number" id="filePaidAmount" placeholder="0" oninput="recalculateFileLeft()">
+                </div>
+                <div class="form-group">
+                    <label for="fileLeftAmount">Amount Left</label>
+                    <input type="number" id="fileLeftAmount" placeholder="0">
+                </div>
+                <div class="form-group">
+                    <label>Total Value</label>
+                    <input type="text" id="fileTotalAmountDisplay" disabled>
+                </div>
+            </div>
+
+            <div class="file-section-title">History &amp; Notes</div>
+            <div class="history-search">
+                <input type="text" id="historySearchInput" placeholder="Search old histories and notes..." oninput="renderHistoryEntries()">
+            </div>
+            <div id="historyEntriesContainer"></div>
+            <button class="btn-save btn-add-entry" onclick="addHistoryEntry()">+ Add History Entry</button>
+
+            <div class="button-group" style="margin-top: 25px;">
+                <button class="btn-save" onclick="savePatientFile()">Save Changes</button>
+                <button class="btn-clear" onclick="closePatientFileModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allPatients = [];
+        let editingPatientId = null;
+        let cloudflareConfig = null;
+        let cloudflareReady = false;
+        let currentRole = null;
+        let currentPostponePatientId = null;
+
+        // Change these passwords to whatever you'd like
+        const ROLE_PASSWORDS = {
+            reception: 'reception123',
+            doctor: 'doctor123'
+        };
+
+        function toggleInstallmentFields() {
+            const method = document.getElementById('paymentMethod').value;
+            const isInstallment = method === 'Installment';
+            document.getElementById('downPaymentGroup').style.display = isInstallment ? 'flex' : 'none';
+            document.getElementById('installmentCountGroup').style.display = isInstallment ? 'flex' : 'none';
+            document.getElementById('amountPaidGroup').style.display = isInstallment ? 'none' : 'flex';
+        }
+
+        function buildInstallmentPlan(total, downPayment, count, startDateStr) {
+            const remaining = Math.max(total - downPayment, 0);
+            const perInstallment = Math.round((remaining / count) * 100) / 100;
+            const startDate = startDateStr ? new Date(startDateStr) : new Date();
+            const installments = [];
+
+            for (let i = 0; i < count; i++) {
+                const dueDate = new Date(startDate);
+                dueDate.setMonth(dueDate.getMonth() + i + 1);
+                installments.push({
+                    id: i + 1,
+                    amount: perInstallment,
+                    dueDate: dueDate.toISOString().slice(0, 10),
+                    paid: false,
+                    paidDate: null
+                });
+            }
+
+            return {
+                totalAmount: total,
+                downPayment: downPayment,
+                numberOfInstallments: count,
+                installments
+            };
+        }
+
+        function login() {
+            const role = document.getElementById('loginRole').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (password !== ROLE_PASSWORDS[role]) {
+                showAlert('Incorrect password!', 'error');
+                return;
+            }
+
+            currentRole = role;
+            sessionStorage.setItem('dentalRole', role);
+            document.getElementById('loginOverlay').classList.add('hide');
+            document.getElementById('loginPassword').value = '';
+            updateRoleBadge();
+            displayRecords();
+            loadSharedData(false);
+        }
+
+        function logout() {
+            currentRole = null;
+            sessionStorage.removeItem('dentalRole');
+            document.getElementById('loginOverlay').classList.remove('hide');
+        }
+
+        function updateRoleBadge() {
+            const badge = document.getElementById('roleBadge');
+            badge.textContent = currentRole === 'doctor' ? 'Doctor' : 'Reception';
+        }
+
+        function checkLogin() {
+            const savedRole = sessionStorage.getItem('dentalRole');
+            if (savedRole && ROLE_PASSWORDS[savedRole]) {
+                currentRole = savedRole;
+                document.getElementById('loginOverlay').classList.add('hide');
+                updateRoleBadge();
+            }
+        }
+
+        const DEFAULT_SHARE_TOKEN = 'dental-studio-clinic';
+        let cloudPollTimer = null;
+
+        function normalizeWorkerUrl(url) {
+            return (url || '').trim().replace(/\/+$/, '');
+        }
+
+        function hostedOnCloudflare() {
+            const host = (location.hostname || '').toLowerCase();
+            return location.protocol.startsWith('http') && (
+                host.endsWith('.workers.dev') ||
+                host.endsWith('.pages.dev') ||
+                host.includes('dental-studio')
+            );
+        }
+
+        function getCloudApiUrl() {
+            const configured = normalizeWorkerUrl((cloudflareConfig && cloudflareConfig.workerUrl) || '');
+            if (configured) {
+                return configured.endsWith('/api/patients') ? configured : configured + '/api/patients';
+            }
+            if (location.protocol.startsWith('http') && location.hostname && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+                return location.origin + '/api/patients';
+            }
+            return '';
+        }
+
+        function cloudflareHeaders() {
+            const token = (cloudflareConfig && cloudflareConfig.token) || DEFAULT_SHARE_TOKEN;
+            return {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
+            };
+        }
+
+        function startCloudPolling() {
+            if (cloudPollTimer) clearInterval(cloudPollTimer);
+            cloudPollTimer = setInterval(function() {
+                if (cloudflareReady) loadSharedData(false);
+            }, 12000);
+        }
+
+        function mergePatientLists(remote, local) {
+            const map = new Map();
+            [...remote, ...local].forEach(function(p) {
+                if (!p) return;
+                const id = String(p.id);
+                const prev = map.get(id);
+                if (!prev || (p.updatedAt || '') >= (prev.updatedAt || '')) {
+                    map.set(id, p);
+                }
+            });
+            return Array.from(map.values()).sort(function(a, b) {
+                return String(b.updatedAt || b.id).localeCompare(String(a.updatedAt || a.id));
+            });
+        }
+
+        function initCloudflare() {
+            const saved = localStorage.getItem('cloudflareShareConfig');
+            cloudflareConfig = saved ? JSON.parse(saved) : { workerUrl: '', token: DEFAULT_SHARE_TOKEN };
+            if (!cloudflareConfig.token) cloudflareConfig.token = DEFAULT_SHARE_TOKEN;
+
+            cloudflareReady = !!getCloudApiUrl();
+            if (cloudflareReady) {
+                updateCloudflareStatus('connected', hostedOnCloudflare() ? 'Using Cloudflare storage' : 'Connected to Cloudflare storage');
+                startCloudPolling();
+            } else {
+                updateCloudflareStatus('warning', 'Not connected — configure the Cloudflare URL');
+            }
+        }
+
+        function updateCloudflareStatus(status, message) {
+            const indicator = document.getElementById('statusIndicator');
+            const text = document.getElementById('statusText');
+            
+            indicator.className = 'status-indicator ' + (status === 'connected' ? 'connected' : status === 'error' ? 'error' : '');
+            text.textContent = message;
+        }
+
+        function showCloudflareConfig() {
+            if (cloudflareConfig) {
+                document.getElementById('cloudflareWorkerUrl').value = cloudflareConfig.workerUrl || (hostedOnCloudflare() ? location.origin : '');
+                document.getElementById('cloudflareShareToken').value = cloudflareConfig.token || DEFAULT_SHARE_TOKEN;
+            }
+            document.getElementById('cloudflareModal').classList.add('show');
+        }
+
+        function closeCloudflareModal() {
+            document.getElementById('cloudflareModal').classList.remove('show');
+        }
+
+        async function saveCloudflareConfig() {
+            const workerUrl = normalizeWorkerUrl(document.getElementById('cloudflareWorkerUrl').value);
+            const token = document.getElementById('cloudflareShareToken').value.trim() || DEFAULT_SHARE_TOKEN;
+
+            if (!workerUrl && !hostedOnCloudflare()) {
+                showAlert('Please enter the Dental Studio Cloudflare URL', 'error');
+                return;
+            }
+
+            cloudflareConfig = { workerUrl: workerUrl || location.origin, token };
+            localStorage.setItem('cloudflareShareConfig', JSON.stringify(cloudflareConfig));
+            cloudflareReady = !!getCloudApiUrl();
+            updateCloudflareStatus('connected', 'Connecting to Cloudflare storage...');
+
+            try {
+                const response = await fetch(getCloudApiUrl(), {
+                    method: 'GET',
+                    headers: cloudflareHeaders()
+                });
+                if (!response.ok) {
+                    const errBody = await response.json().catch(() => ({}));
+                    throw new Error(errBody.error || ('HTTP ' + response.status));
+                }
+                updateCloudflareStatus('connected', 'Using Cloudflare storage');
+                closeCloudflareModal();
+                startCloudPolling();
+                showAlert('Connected. Patients added here will appear on other devices.', 'success');
+                await loadSharedData(true);
+            } catch (err) {
+                updateCloudflareStatus('error', 'Connection Failed');
+                showAlert('Could not reach Cloudflare storage: ' + err.message, 'error');
+            }
+        }
+
+        async function fetchCloudPatients() {
+            const apiUrl = getCloudApiUrl();
+            if (!apiUrl) return null;
+            const response = await fetch(apiUrl, {
+                method: 'GET',
+                headers: cloudflareHeaders()
+            });
+            const result = await response.json().catch(() => ({}));
+            if (!response.ok) throw new Error(result.error || ('HTTP ' + response.status));
+            const patients = Array.isArray(result) ? result : result.patients;
+            if (!Array.isArray(patients)) throw new Error('Shared data is not a valid patient list.');
+            return patients;
+        }
+
+        async function syncSharedData(showMessage = true) {
+            if (!cloudflareReady || !getCloudApiUrl()) {
+                if (showMessage) {
+                    showAlert('Please configure the Cloudflare URL first.', 'error');
+                    showCloudflareConfig();
+                }
+                return false;
+            }
+
+            const exportBtn = document.getElementById('exportBtn');
+            const originalText = exportBtn ? exportBtn.innerHTML : '';
+            if (exportBtn && showMessage) {
+                exportBtn.innerHTML = '<span class="loading-spinner"></span> Saving...';
+                exportBtn.disabled = true;
+            }
+
+            try {
+                let remote = [];
+                try {
+                    remote = await fetchCloudPatients() || [];
+                } catch (err) {
+                    if (showMessage) console.warn('Could not merge remote before save:', err);
+                }
+
+                allPatients = mergePatientLists(remote, allPatients);
+                localStorage.setItem('dentalPatients', JSON.stringify(allPatients));
+                displayRecords();
+
+                const response = await fetch(getCloudApiUrl(), {
+                    method: 'PUT',
+                    headers: cloudflareHeaders(),
+                    body: JSON.stringify({ patients: allPatients })
+                });
+                const result = await response.json().catch(() => ({}));
+                if (!response.ok) throw new Error(result.error || ('HTTP ' + response.status));
+
+                updateCloudflareStatus('connected', 'Saved on Cloudflare (' + allPatients.length + ' patients)');
+                if (showMessage) showAlert('Patients saved to Cloudflare storage.', 'success');
+                return true;
+            } catch (err) {
+                console.error('Shared sync error:', err);
+                updateCloudflareStatus('error', 'Save to Cloudflare failed');
+                if (showMessage) showAlert('Could not save to Cloudflare: ' + err.message, 'error');
+                return false;
+            } finally {
+                if (exportBtn && showMessage) {
+                    exportBtn.innerHTML = originalText;
+                    exportBtn.disabled = false;
+                }
+            }
+        }
+
+        async function loadSharedData(showMessage = false) {
+            if (!cloudflareReady || !getCloudApiUrl()) {
+                if (showMessage) {
+                    showAlert('Please configure the Cloudflare URL first.', 'error');
+                    showCloudflareConfig();
+                }
+                return false;
+            }
+
+            try {
+                const sharedPatients = await fetchCloudPatients();
+                allPatients = mergePatientLists(sharedPatients, allPatients);
+                savePatients(false);
+                displayRecords();
+                updateCloudflareStatus('connected', 'Cloudflare storage (' + allPatients.length + ' patients)');
+                if (showMessage) showAlert('Loaded ' + sharedPatients.length + ' patient(s) from Cloudflare.', 'success');
+                return true;
+            } catch (err) {
+                console.error('Shared load error:', err);
+                if (showMessage) showAlert('Could not load patients from Cloudflare: ' + err.message, 'error');
+                return false;
+            }
+        }
+
+        function showAlert(message, type) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.textContent = message;
+            alertBox.className = `alert show ${type}`;
+            setTimeout(() => {
+                alertBox.classList.remove('show');
+            }, 4000);
+        }
+
+        function editPatient(id) {
+            const patient = allPatients.find(p => p.id === id);
+            if (!patient) return;
+
+            editingPatientId = id;
+
+            document.getElementById('patientName').value = patient.name || '';
+            document.getElementById('fileNumber').value = patient.fileNumber || '';
+            document.getElementById('doctorName').value = patient.doctorName || '';
+            document.getElementById('patientAge').value = patient.age || '';
+            document.getElementById('patientPhone').value = patient.phone || '';
+            document.getElementById('patientDiagnosis').value = patient.diagnosis || '';
+            document.getElementById('paymentMethod').value = patient.paymentMethod || '';
+            document.getElementById('paymentValue').value = patient.paymentValue || '';
+            document.getElementById('amountPaidInput').value = typeof patient.amountPaid === 'number' ? patient.amountPaid : '';
+            document.getElementById('downPayment').value = patient.installmentPlan ? patient.installmentPlan.downPayment : '';
+            document.getElementById('installmentCount').value = patient.installmentPlan ? patient.installmentPlan.installments.length : '';
+            document.getElementById('reservationDate').value = patient.reservationDate || '';
+            document.getElementById('reservationTime').value = patient.reservationTime || '';
+            document.getElementById('notes').value = patient.notes || '';
+            toggleInstallmentFields();
+
+            document.querySelector('.form-section h2').textContent = 'Edit Patient Record';
+            const saveBtn = document.querySelector('.form-section .btn-save');
+            saveBtn.textContent = 'Update Patient';
+            saveBtn.setAttribute('onclick', 'addPatient()');
+
+            document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        async function addPatient() {
+            const name = document.getElementById('patientName').value.trim();
+            const fileNumber = document.getElementById('fileNumber').value.trim();
+            const doctorName = document.getElementById('doctorName').value.trim();
+            const age = document.getElementById('patientAge').value;
+            const phone = document.getElementById('patientPhone').value.trim();
+            const diagnosis = document.getElementById('patientDiagnosis').value.trim();
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            const paymentValue = document.getElementById('paymentValue').value;
+            const amountPaidInput = document.getElementById('amountPaidInput').value;
+            const reservationDate = document.getElementById('reservationDate').value;
+            const reservationTime = document.getElementById('reservationTime').value;
+            const notes = document.getElementById('notes').value.trim();
+
+            if (!name || !age || !phone || !diagnosis || !paymentMethod || !paymentValue) {
+                showAlert('Please fill in all required fields!', 'error');
+                return;
+            }
+
+            const isEditing = !!editingPatientId;
+            const existingPatient = isEditing ? allPatients.find(p => p.id === editingPatientId) : null;
+
+            let installmentPlan = null;
+            if (paymentMethod === 'Installment') {
+                const installmentCount = parseInt(document.getElementById('installmentCount').value);
+                const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
+
+                if (!installmentCount || installmentCount < 1) {
+                    showAlert('Please enter a valid number of installments!', 'error');
+                    return;
+                }
+
+                installmentPlan = buildInstallmentPlan(parseFloat(paymentValue), downPayment, installmentCount, reservationDate);
+
+                // Preserve already-paid installments when editing an existing plan
+                if (existingPatient && existingPatient.installmentPlan) {
+                    installmentPlan.installments.forEach((inst, idx) => {
+                        const oldInst = existingPatient.installmentPlan.installments[idx];
+                        if (oldInst && oldInst.paid) {
+                            inst.paid = true;
+                            inst.paidDate = oldInst.paidDate;
+                        }
+                    });
+                }
+            }
+
+            // Amount paid is entered manually by reception (not applicable to installment plans,
+            // which track payment through the down payment and paid installments instead)
+            let amountPaid = null;
+            let amountLeft = null;
+            if (paymentMethod !== 'Installment') {
+                amountPaid = Math.max(parseFloat(amountPaidInput) || 0, 0);
+                amountLeft = Math.max(parseFloat(paymentValue) - amountPaid, 0);
+            }
+
+            const now = new Date().toISOString();
+
+            if (isEditing && existingPatient) {
+                existingPatient.name = name;
+                existingPatient.fileNumber = fileNumber;
+                existingPatient.doctorName = doctorName;
+                existingPatient.age = parseInt(age);
+                existingPatient.phone = phone;
+                existingPatient.diagnosis = diagnosis;
+                existingPatient.paymentMethod = paymentMethod;
+                existingPatient.paymentValue = parseFloat(paymentValue);
+                existingPatient.installmentPlan = installmentPlan;
+                if (amountPaid !== null) {
+                    existingPatient.amountPaid = amountPaid;
+                    existingPatient.amountLeft = amountLeft;
+                }
+                existingPatient.reservationDate = reservationDate;
+                existingPatient.reservationTime = reservationTime;
+                existingPatient.notes = notes;
+                existingPatient.updatedAt = now;
+            } else {
+                const patient = {
+                    id: Date.now() + Math.random(),
+                    name,
+                    fileNumber,
+                    doctorName,
+                    age: parseInt(age),
+                    phone,
+                    diagnosis,
+                    paymentMethod,
+                    paymentValue: parseFloat(paymentValue),
+                    installmentPlan,
+                    amountPaid: amountPaid !== null ? amountPaid : 0,
+                    amountLeft: amountLeft !== null ? amountLeft : parseFloat(paymentValue),
+                    reservationDate,
+                    reservationTime,
+                    notes,
+                    date: new Date().toISOString().slice(0, 10),
+                    confirmed: false,
+                    postponed: false,
+                    updatedAt: now
+                };
+
+                allPatients.unshift(patient);
+            }
+
+            editingPatientId = null;
+            savePatients(false);
+            clearForm();
+            displayRecords();
+
+            const saved = await syncSharedData(false);
+            const actionLabel = isEditing ? 'updated' : 'saved';
+            if (saved) {
+                showAlert(`Patient ${actionLabel} and synced to Cloudflare. Other devices will see this record.`, 'success');
+            } else {
+                showAlert(`Patient ${actionLabel} on this device, but it was not stored on Cloudflare yet.`, 'error');
+            }
+        }
+
+        function checkFileNumberHistory() {
+            const fileNumber = document.getElementById('fileNumber').value.trim();
+            const preview = document.getElementById('fileNumberHistoryPreview');
+
+            if (!fileNumber) {
+                preview.style.display = 'none';
+                preview.innerHTML = '';
+                return;
+            }
+
+            const matches = allPatients.filter(p => (p.fileNumber || '').trim() === fileNumber);
+
+            if (matches.length === 0) {
+                preview.style.display = 'none';
+                preview.innerHTML = '';
+                return;
+            }
+
+            matches.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+            let html = `<h4>⚠️ File #${fileNumber} already exists — old history</h4>`;
+
+            matches.forEach(patient => {
+                html += `<div class="old-record">
+                    <div class="old-record-meta">${patient.name} — ${patient.date}${patient.reservationTime ? ' — ' + patient.reservationTime : ''}${patient.doctorName ? ' — Dr. ' + patient.doctorName : ''}</div>
+                    <div class="old-record-line"><strong>Diagnosis:</strong> ${patient.diagnosis || '-'}</div>
+                    ${patient.notes ? `<div class="old-record-line"><strong>Notes:</strong> ${patient.notes}</div>` : ''}
+                    <div class="old-record-line"><strong>Status:</strong> ${patient.status || 'In Progress'}</div>
+                </div>`;
+
+                if (Array.isArray(patient.history) && patient.history.length > 0) {
+                    const sortedHistory = [...patient.history].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+                    sortedHistory.forEach(entry => {
+                        html += `<div class="old-record">
+                            <div class="old-record-meta">${entry.date}</div>
+                            <div class="old-record-line">${entry.text}</div>
+                        </div>`;
+                    });
+                }
+            });
+
+            preview.innerHTML = html;
+            preview.style.display = 'block';
+        }
+
+        function clearForm() {
+            editingPatientId = null;
+            document.querySelector('.form-section h2').textContent = 'New Patient Record';
+            const saveBtn = document.querySelector('.form-section .btn-save');
+            saveBtn.textContent = 'Save Patient';
+            document.getElementById('fileNumberHistoryPreview').style.display = 'none';
+            document.getElementById('fileNumberHistoryPreview').innerHTML = '';
+            document.getElementById('patientName').value = '';
+            document.getElementById('fileNumber').value = '';
+            document.getElementById('doctorName').value = '';
+            document.getElementById('patientAge').value = '';
+            document.getElementById('patientPhone').value = '';
+            document.getElementById('patientDiagnosis').value = '';
+            document.getElementById('paymentMethod').value = '';
+            document.getElementById('paymentValue').value = '';
+            document.getElementById('amountPaidInput').value = '';
+            document.getElementById('downPayment').value = '';
+            document.getElementById('installmentCount').value = '';
+            document.getElementById('reservationDate').value = '';
+            document.getElementById('reservationTime').value = '';
+            document.getElementById('notes').value = '';
+            toggleInstallmentFields();
+        }
+
+        function savePatients(autoSync = true) {
+            const now = new Date().toISOString();
+            allPatients.forEach(p => {
+                if (!p.updatedAt) p.updatedAt = now;
+            });
+            localStorage.setItem('dentalPatients', JSON.stringify(allPatients));
+            if (autoSync && cloudflareReady) {
+                syncSharedData(false);
+            }
+        }
+
+        async function loadPatients() {
+            const data = localStorage.getItem('dentalPatients');
+            if (data) {
+                allPatients = JSON.parse(data);
+            }
+            initCloudflare();
+            displayRecords();
+            updateStats();
+
+            if (cloudflareReady) {
+                await loadSharedData(false);
+            }
+        }
+
+        function displayRecords() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allPatients.filter(p =>
+                p.name.toLowerCase().includes(searchTerm) ||
+                p.phone.includes(searchTerm)
+            );
+
+            const container = document.getElementById('recordsContainer');
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="no-records">No patient records found</div>';
+                return;
+            }
+
+            let html = `
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Phone</th>
+                                <th>Diagnosis</th>
+                                <th>Notes</th>
+                                <th>Payment</th>
+                                <th>Date</th>
+                                <th>Reservation</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            filtered.forEach(patient => {
+                const statusBadge = patient.postponed ?
+                    '<span style="color: #5e35b1; font-weight: 600;">⏸ Postponed</span>' :
+                    patient.confirmed ?
+                    '<span style="color: #4caf50; font-weight: 600;">✓ Confirmed</span>' :
+                    '<span style="color: #ff9800; font-weight: 600;">⏳ Pending</span>';
+
+                const isTodayReservation = patient.reservationDate === new Date().toISOString().slice(0, 10);
+                const reservationTime = patient.reservationTime ? `<span class="reservation-time">🕐 ${patient.reservationTime}</span>` : '';
+
+                const diagnosisCell = patient.diagnosis;
+                const statusClass = (patient.status || 'In Progress').toLowerCase().replace(' ', '-');
+                const caseStatusBadge = `<span class="case-status ${statusClass}">${patient.status || 'In Progress'}</span>`;
+                const postponedInfo = patient.postponed && patient.postponedReason ? `<br><span style="color:#5e35b1;">Postponed: ${patient.postponedReason}</span>` : '';
+                const notesCell = `${caseStatusBadge}${patient.notes ? '<br>' + patient.notes : ''}${postponedInfo}`;
+
+                let paymentCell = `${patient.paymentMethod} - ${patient.paymentValue}`;
+                let installmentBtn = '';
+                if (patient.installmentPlan) {
+                    const paidCount = patient.installmentPlan.installments.filter(i => i.paid).length;
+                    const totalCount = patient.installmentPlan.installments.length;
+                    const remaining = patient.installmentPlan.installments
+                        .filter(i => !i.paid)
+                        .reduce((sum, i) => sum + i.amount, 0);
+                    paymentCell = `${patient.paymentMethod} - ${patient.paymentValue}<br><span class="installment-progress">${paidCount}/${totalCount} paid, ${remaining} left</span>`;
+                    installmentBtn = `<button class="btn-view" onclick="openInstallmentModal(${patient.id})">Installments</button>`;
+                } else if (typeof patient.amountPaid === 'number') {
+                    paymentCell = `${patient.paymentMethod} - ${patient.paymentValue}<br><span class="installment-progress">Paid ${patient.amountPaid}, ${patient.amountLeft} left</span>`;
+                }
+
+                html += `
+                    <tr>
+                        <td>${patient.name}${patient.fileNumber ? ' - File #' + patient.fileNumber : ''}${patient.doctorName ? ' - Dr. ' + patient.doctorName : ''}</td>
+                        <td>${patient.age}</td>
+                        <td>${patient.phone}</td>
+                        <td>${diagnosisCell}</td>
+                        <td>${notesCell}</td>
+                        <td>${paymentCell}</td>
+                        <td>${patient.date}</td>
+                        <td>${patient.reservationDate || ''}${reservationTime}${isTodayReservation ? '<span class="today-badge">TODAY</span>' : ''}</td>
+                        <td>${statusBadge}</td>
+                        <td>
+                            <div class="btn-actions">
+                                <button class="btn-file" onclick="openPatientFileModal(${patient.id})">📁 File</button>
+                                ${installmentBtn}
+                                <button class="btn-clear" onclick="editPatient(${patient.id})">✏️ Edit</button>
+                                <button class="btn-postpone" onclick="postponePatient(${patient.id})">${patient.postponed ? 'Reschedule' : 'Postpone'}</button>
+                                <button class="btn-delete" onclick="deletePatient(${patient.id})">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            container.innerHTML = html;
+            updateStats();
+            displayTodayReservations();
+        }
+
+        function displayTodayReservations() {
+            const todayStr = new Date().toISOString().slice(0, 10);
+            const todayPatients = allPatients
+                .filter(p => p.reservationDate === todayStr)
+                .sort((a, b) => (a.reservationTime || '99:99').localeCompare(b.reservationTime || '99:99'));
+            const container = document.getElementById('todayReservationsContainer');
+            document.getElementById('todayReservationCount').textContent = `(${todayPatients.length})`;
+
+            if (todayPatients.length === 0) {
+                container.innerHTML = '<div class="no-records">No reservations for today</div>';
+                return;
+            }
+
+            let html = `
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Reservation Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            todayPatients.forEach(patient => {
+                const statusBadge = patient.postponed ?
+                    '<span style="color: #5e35b1; font-weight: 600;">⏸ Postponed</span>' :
+                    patient.confirmed ?
+                    '<span style="color: #4caf50; font-weight: 600;">✓ Confirmed</span>' :
+                    '<span style="color: #ff9800; font-weight: 600;">⏳ Pending</span>';
+
+                html += `
+                    <tr>
+                        <td>${patient.name}${patient.fileNumber ? ' - File #' + patient.fileNumber : ''}${patient.doctorName ? ' - Dr. ' + patient.doctorName : ''}</td>
+                        <td>${patient.phone}</td>
+                        <td>${patient.reservationDate}<span class="today-badge">TODAY</span>${patient.reservationTime ? `<span class="reservation-time">🕐 ${patient.reservationTime}</span>` : ''}</td>
+                        <td>${statusBadge}</td>
+                        <td>
+                            <div class="btn-actions">
+                                <button class="btn-confirm" onclick="confirmPatient(${patient.id})">Confirm</button>
+                                <button class="btn-postpone" onclick="postponePatient(${patient.id})">${patient.postponed ? 'Reschedule' : 'Postpone'}</button>
+                                <button class="btn-delete" onclick="deletePatient(${patient.id})">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        function confirmPatient(id) {
+            const patient = allPatients.find(p => p.id === id);
+            if (patient) {
+                patient.confirmed = true;
+                patient.postponed = false;
+                savePatients();
+                displayRecords();
+                showAlert('Reservation confirmed!', 'success');
+            }
+        }
+
+        function postponePatient(id) {
+            const patient = allPatients.find(p => p.id === id);
+            if (!patient) return;
+
+            currentPostponePatientId = id;
+            document.getElementById('postponeModalTitle').textContent =
+                patient.postponed ? `Reschedule ${patient.name}` : `Postpone ${patient.name}`;
+
+            const currentDateTime = [patient.reservationDate, patient.reservationTime].filter(Boolean).join(' at ');
+            document.getElementById('postponeCurrentDateTime').textContent = currentDateTime || 'Not scheduled';
+
+            document.getElementById('postponeDate').value = patient.reservationDate || '';
+            document.getElementById('postponeTime').value = patient.reservationTime || '';
+            document.getElementById('postponeReason').value = patient.postponedReason || '';
+
+            document.getElementById('postponeModal').classList.add('show');
+        }
+
+        function closePostponeModal() {
+            document.getElementById('postponeModal').classList.remove('show');
+            currentPostponePatientId = null;
+        }
+
+        async function savePostponement() {
+            const patient = allPatients.find(p => p.id === currentPostponePatientId);
+            if (!patient) return;
+
+            const newDate = document.getElementById('postponeDate').value;
+            const newTime = document.getElementById('postponeTime').value;
+            const reason = document.getElementById('postponeReason').value.trim();
+
+            if (!newDate || !newTime) {
+                showAlert('Please choose both the new date and time.', 'error');
+                return;
+            }
+
+            patient.postponed = true;
+            patient.confirmed = false;
+            patient.reservationDate = newDate;
+            patient.reservationTime = newTime;
+            patient.postponedReason = reason;
+            patient.postponedAt = new Date().toISOString();
+            patient.updatedAt = new Date().toISOString();
+
+            savePatients();
+            displayRecords();
+            closePostponeModal();
+
+            await syncSharedData(false);
+            showAlert('Appointment postponed and rescheduled successfully.', 'success');
+        }
+
+        function deletePatient(id) {
+            if (confirm('Are you sure you want to delete this record?')) {
+                allPatients = allPatients.filter(p => p.id !== id);
+                savePatients();
+                displayRecords();
+                showAlert('Record deleted successfully!', 'success');
+            }
+        }
+
+        function openInstallmentModal(patientId) {
+            const patient = allPatients.find(p => p.id === patientId);
+            if (!patient || !patient.installmentPlan) return;
+
+            document.getElementById('installmentModalTitle').textContent = `Installment Plan - ${patient.name}`;
+
+            let bodyHtml = `<p style="margin-bottom: 15px; color: #555;">
+                Total: ${patient.installmentPlan.totalAmount} | Down Payment: ${patient.installmentPlan.downPayment}
+            </p>`;
+
+            patient.installmentPlan.installments.forEach(inst => {
+                bodyHtml += `
+                    <div class="installment-row">
+                        <div>
+                            Installment ${inst.id}: ${inst.amount} — Due ${inst.dueDate}
+                            ${inst.paid
+                                ? `<div class="installment-paid">Paid on ${inst.paidDate}</div>`
+                                : `<div class="installment-due">Not paid yet</div>`}
+                        </div>
+                        ${inst.paid ? '' : `<button class="btn-pay" onclick="markInstallmentPaid(${patient.id}, ${inst.id})">Mark Paid</button>`}
+                    </div>
+                `;
+            });
+
+            document.getElementById('installmentModalBody').innerHTML = bodyHtml;
+            document.getElementById('installmentModal').classList.add('show');
+        }
+
+        function closeInstallmentModal() {
+            document.getElementById('installmentModal').classList.remove('show');
+        }
+
+        function markInstallmentPaid(patientId, installmentId) {
+            const patient = allPatients.find(p => p.id === patientId);
+            if (!patient || !patient.installmentPlan) return;
+
+            const installment = patient.installmentPlan.installments.find(i => i.id === installmentId);
+            if (installment) {
+                installment.paid = true;
+                installment.paidDate = new Date().toISOString().slice(0, 10);
+                savePatients();
+                displayRecords();
+                openInstallmentModal(patientId);
+                showAlert('Installment marked as paid!', 'success');
+            }
+        }
+
+        let currentFilePatientId = null;
+        let currentFileHistory = [];
+
+        function openPatientFileModal(patientId) {
+            const patient = allPatients.find(p => p.id === patientId);
+            if (!patient) return;
+
+            currentFilePatientId = patientId;
+
+            // Backward compatibility for older records that don't have these fields yet
+            if (!Array.isArray(patient.history)) {
+                patient.history = [];
+            }
+            if (!patient.status) {
+                patient.status = 'In Progress';
+            }
+            if (typeof patient.amountPaid !== 'number') {
+                patient.amountPaid = 0;
+            }
+            if (typeof patient.amountLeft !== 'number') {
+                patient.amountLeft = patient.paymentValue - patient.amountPaid;
+            }
+
+            currentFileHistory = patient.history.map(h => ({ ...h }));
+
+            document.getElementById('patientFileModalTitle').textContent =
+                `Patient File - ${patient.name}${patient.fileNumber ? ' (File #' + patient.fileNumber + ')' : ''}`;
+            document.getElementById('fileStatus').value = patient.status;
+            document.getElementById('filePaidAmount').value = patient.amountPaid;
+            document.getElementById('fileLeftAmount').value = patient.amountLeft;
+            document.getElementById('fileTotalAmountDisplay').value = patient.paymentValue;
+            document.getElementById('historySearchInput').value = '';
+
+            renderHistoryEntries();
+            document.getElementById('patientFileModal').classList.add('show');
+        }
+
+        function closePatientFileModal() {
+            document.getElementById('patientFileModal').classList.remove('show');
+            currentFilePatientId = null;
+            currentFileHistory = [];
+        }
+
+        function recalculateFileLeft() {
+            const total = parseFloat(document.getElementById('fileTotalAmountDisplay').value) || 0;
+            const paid = parseFloat(document.getElementById('filePaidAmount').value) || 0;
+            document.getElementById('fileLeftAmount').value = Math.max(total - paid, 0);
+        }
+
+        function handleFileStatusChange() {
+            const status = document.getElementById('fileStatus').value;
+            if (status === 'Complete') {
+                const total = parseFloat(document.getElementById('fileTotalAmountDisplay').value) || 0;
+                document.getElementById('filePaidAmount').value = total;
+                document.getElementById('fileLeftAmount').value = 0;
+            }
+        }
+
+        function renderHistoryEntries() {
+            const searchTerm = document.getElementById('historySearchInput').value.toLowerCase();
+            const container = document.getElementById('historyEntriesContainer');
+
+            const filtered = currentFileHistory
+                .map((entry, index) => ({ entry, index }))
+                .filter(({ entry }) => entry.text.toLowerCase().includes(searchTerm) || (entry.date || '').includes(searchTerm));
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="no-history">No history entries found</div>';
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(({ entry, index }) => {
+                html += `
+                    <div class="history-entry">
+                        <div class="history-entry-meta">
+                            <span class="history-entry-date">${entry.date}</span>
+                            <button class="btn-delete-entry" onclick="deleteHistoryEntry(${index})">Delete</button>
+                        </div>
+                        <textarea onchange="updateHistoryEntryText(${index}, this.value)">${entry.text}</textarea>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function updateHistoryEntryText(index, value) {
+            if (currentFileHistory[index]) {
+                currentFileHistory[index].text = value;
+            }
+        }
+
+        function addHistoryEntry() {
+            currentFileHistory.unshift({
+                id: Date.now(),
+                date: new Date().toISOString().slice(0, 10),
+                text: ''
+            });
+            document.getElementById('historySearchInput').value = '';
+            renderHistoryEntries();
+        }
+
+        function deleteHistoryEntry(index) {
+            if (confirm('Delete this history entry?')) {
+                currentFileHistory.splice(index, 1);
+                renderHistoryEntries();
+            }
+        }
+
+        function savePatientFile() {
+            const patient = allPatients.find(p => p.id === currentFilePatientId);
+            if (!patient) return;
+
+            patient.status = document.getElementById('fileStatus').value;
+
+            if (patient.status === 'Complete') {
+                // Completing a case always means payment is fully settled
+                patient.amountPaid = patient.paymentValue;
+                patient.amountLeft = 0;
+            } else {
+                patient.amountPaid = parseFloat(document.getElementById('filePaidAmount').value) || 0;
+                patient.amountLeft = parseFloat(document.getElementById('fileLeftAmount').value) || 0;
+            }
+
+            patient.history = currentFileHistory.filter(h => h.text.trim() !== '');
+
+            savePatients();
+            displayRecords();
+            closePatientFileModal();
+            showAlert('Patient file updated!', 'success');
+        }
+
+        function exportData() {
+            if (allPatients.length === 0) {
+                showAlert('No patient records to export.', 'error');
+                return;
+            }
+
+            const dataStr = JSON.stringify(allPatients, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `dental-patients-export-${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            showAlert(`Exported ${allPatients.length} patient record(s).`, 'success');
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (!Array.isArray(imported)) {
+                        throw new Error('Invalid format');
+                    }
+
+                    let addedCount = 0;
+                    imported.forEach(patient => {
+                        if (patient && typeof patient === 'object' && patient.name) {
+                            patient.id = patient.id || (Date.now() + Math.random());
+                            patient.updatedAt = new Date().toISOString();
+                            allPatients.push(patient);
+                            addedCount++;
+                        }
+                    });
+
+                    savePatients();
+                    displayRecords();
+                    showAlert(`Imported ${addedCount} record(s) successfully!`, 'success');
+                } catch (err) {
+                    showAlert('Failed to import: invalid JSON file.', 'error');
+                }
+                event.target.value = '';
+            };
+            reader.readAsText(file);
+        }
+
+        function updateStats() {
+            document.getElementById('recordCount').textContent = `(${allPatients.length})`;
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            displayRecords();
+        }
+
+        document.getElementById('searchInput').addEventListener('input', displayRecords);
+        document.getElementById('cloudflareModal').addEventListener('click', function(e) {
+            if (e.target === this) closeCloudflareModal();
+        });
+        document.getElementById('installmentModal').addEventListener('click', function(e) {
+            if (e.target === this) closeInstallmentModal();
+        });
+        document.getElementById('patientFileModal').addEventListener('click', function(e) {
+            if (e.target === this) closePatientFileModal();
+        });
+        document.getElementById('postponeModal').addEventListener('click', function(e) {
+            if (e.target === this) closePostponeModal();
+        });
+
+        document.getElementById('loginPassword').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') login();
+        });
+
+        window.addEventListener('load', function() {
+            checkLogin();
+            loadPatients();
+        });
+    </script>
+</body>
+</html>
