@@ -1,1 +1,3 @@
-
+"d1_databases": [
+  { "binding": "DB", "database_name": "dental-db" }
+]
